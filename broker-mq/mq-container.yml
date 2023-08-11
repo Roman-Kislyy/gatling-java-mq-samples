@@ -1,0 +1,22 @@
+# https://github.com/ibm-messaging/mq-container
+# https://developer.ibm.com/tutorials/mq-connect-app-queue-manager-containers/
+
+version: '2'
+services:
+  broker-mq:
+    image: icr.io/ibm-messaging/mq:latest
+    hostname: broker-mq
+    container_name: broker-mq
+    ports:
+      # Админка https://localhost:9443/
+      - "0.0.0.0:9443:9443/tcp"
+      - "0.0.0.0:1414:1414/tcp"
+    environment:
+      LICENSE: "accept"
+      MQ_QMGR_NAME: "QM1"
+      MQ_ENABLE_METRICS: "true"
+      MQ_ADMIN_PASSWORD: "changeit"
+      MQ_APP_PASSWORD: "changeit"
+    volumes:
+      # Может потребоваться chmod 745 ./conf -R
+      - ./conf/30-gatling-queues.mqsc:/etc/mqm/30-gatling-queues.mqsc
