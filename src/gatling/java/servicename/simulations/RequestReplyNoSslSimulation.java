@@ -4,8 +4,7 @@ import io.gatling.javaapi.core.Simulation;
 import servicename.execs.jms.MqClientConfiguration;
 import servicename.scenarios.ClientSearchByPassportScenario;
 
-import static io.gatling.javaapi.core.CoreDsl.constantUsersPerSec;
-import static io.gatling.javaapi.core.CoreDsl.rampUsersPerSec;
+import static io.gatling.javaapi.core.CoreDsl.*;
 
 /**
  * <h2>Тест стабильности для демонстрации работы метода requestReply без SSL для IBM MQ</h2>
@@ -22,6 +21,6 @@ public class RequestReplyNoSslSimulation extends Simulation {
                         constantUsersPerSec(50).during(60))
         ).protocols(new MqClientConfiguration()
                         .jmsProtocol()
-        );
+        ).assertions(forAll().responseTime().percentile(90).lte(5000));
     }
 }

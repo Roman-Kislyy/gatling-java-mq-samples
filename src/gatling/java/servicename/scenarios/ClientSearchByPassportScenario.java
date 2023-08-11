@@ -42,9 +42,7 @@ public class ClientSearchByPassportScenario {
 //                        .replyQueue("GATLING.TEST.Q1.RS")
                         .textMessage(ElFileBody("json/ClientSearch/requests/byPassport.json"))
                         .property("test_header", "test_value")
-                        .check(jsonPath("$.passport").exists(),
-                                responseTimeInMillis().lte(5000)
-                        )
+                        .check(jsonPath("$.passport").exists())
                 );
 
 }
