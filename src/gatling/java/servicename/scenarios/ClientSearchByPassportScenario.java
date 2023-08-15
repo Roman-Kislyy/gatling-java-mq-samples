@@ -34,7 +34,7 @@ public class ClientSearchByPassportScenario {
      **/
     public static FeederBuilder<String> passports = csv("pools/passports.csv").random();
 
-    public static ScenarioBuilder scn = scenario("Async client search (demo requestReply), no ssl")
+    public static ScenarioBuilder scn = scenario("Async client search (demo requestReply)")
             .feed(passports)
             .exec(jms("Search by passport").requestReply()
                         .queue("GATLING.TEST.Q1.RQ")

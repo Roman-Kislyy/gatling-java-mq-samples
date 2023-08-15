@@ -24,6 +24,7 @@ out
 
 # MQ data
 **/broker-mq/conf/data/*
+FFDC
 
 #Logs
 *.log

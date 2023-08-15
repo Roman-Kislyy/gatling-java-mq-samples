@@ -2,6 +2,7 @@ package servicename.execs.jms;
 
 import com.ibm.mq.jms.MQConnectionFactory;
 import com.ibm.msg.client.wmq.WMQConstants;
+import helpers.files.ResourceHelper;
 import helpers.ssl.JksHelper;
 import io.gatling.javaapi.jms.JmsProtocolBuilder;
 import org.slf4j.Logger;
@@ -44,14 +45,16 @@ public class MqSslClientConfiguration {
         try {
             if (!chiperSpec.equals("")) {
                 log.info("Connecting with SSL keys. ChiperSpec = {}", chiperSpec);
+                keystore = ResourceHelper.gatlingResourcePath(keystore);
+                truststore = ResourceHelper.gatlingResourcePath(truststore);
                 JksHelper.isValid(keystore, keystorePass);
                 JksHelper.isValid(truststore, truststorePass);
-                System.setProperty("com.ibm.cfg.preferTLS", "true");
-                System.setProperty("com.ibm.cfg.useIBMCipherMappings", "false");
-                System.setProperty("java.net.ssl.keyStore", keystore);
-                System.setProperty("java.net.ssl.keyStorePassword", keystorePass);
-                System.setProperty("java.net.ssl.trustStore", truststore);
-                System.setProperty("java.net.ssl.trustStorePassword", truststorePass);
+                System.setProperty("com.ibm.mq.cfg.preferTLS", "true");
+                System.setProperty("com.ibm.mq.cfg.useIBMCipherMappings", "false");
+                System.setProperty("javax.net.ssl.keyStore", keystore);
+                System.setProperty("javax.net.ssl.keyStorePassword", keystorePass);
+                System.setProperty("javax.net.ssl.trustStore", truststore);
+                System.setProperty("javax.net.ssl.trustStorePassword", truststorePass);
             }
             cf.setTransportType(WMQConstants.WMQ_CM_CLIENT);
             cf.setHostName(host);
