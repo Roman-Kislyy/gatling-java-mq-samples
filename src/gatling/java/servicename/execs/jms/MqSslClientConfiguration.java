@@ -67,7 +67,7 @@ public class MqSslClientConfiguration {
             cf.setIntProperty("XMSC_WMQ_SHARE_CONV_ALLOWED", 1);
 
             if (!chiperSpec.equals("")){
-                cf.setStringProperty(WMQConstants.WMQ_SSL_CIPHER_SUITE, chiperSpec);
+                cf.setStringProperty(WMQConstants.WMQ_SSL_CIPHER_SPEC, chiperSpec);
                 cf.setBooleanProperty(WMQConstants.USER_AUTHENTICATION_MQCSP, true);
             }
 
