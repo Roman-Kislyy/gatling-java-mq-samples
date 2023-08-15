@@ -15,7 +15,6 @@ public class Engine {
       .resourcesDirectory(IDEPathHelper.gradleResourcesDirectory.toString())
       .resultsDirectory(IDEPathHelper.resultsDirectory.toString())
       .binariesDirectory(IDEPathHelper.gradleBinariesDirectory.toString());
-
     Gatling.fromMap(props.build());
   }
 }

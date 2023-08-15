@@ -2,40 +2,57 @@ package servicename.execs.jms;
 
 import com.ibm.mq.jms.MQConnectionFactory;
 import com.ibm.msg.client.wmq.WMQConstants;
+import helpers.ssl.JksHelper;
 import io.gatling.javaapi.jms.JmsProtocolBuilder;
-import javax.jms.JMSException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.*;
+
 import static io.gatling.javaapi.jms.JmsDsl.jms;
 import static ru.tinkoff.gatling.javaapi.SimulationConfig.getIntParam;
 import static ru.tinkoff.gatling.javaapi.SimulationConfig.getStringParam;
 
 /**
- * <h2>Класс настроек подключения к MQ</h2>
+ * <h2>Класс настроек подключения к MQ с использованием SSL сертификатов</h2>
  * <p>
  *     Параметры подключения к брокеру берутся из файла настроек <b>resources/simulation.conf</b>
  * <p>
- *     Если вам требуется несколько вариантов подключений (с разными логинами или брокерами), то создайте копии класса c другими именами и используйте их.
+ *     Сертификаты находятся в truststore в <b>resources/keys/mq</b>
  * <p>
- *     Например, FromSiteMqClientConfiguration и FromMobileMqClientConfiguration
+ *     Если вам требуется несколько вариантов подключений (с разными логинами или брокерами), то создайте копии класса c другими именами и используйте их.
  * @author  Roman Kislyy
  * @since 2023-08-11
  */
-public class MqClientConfiguration {
+public class MqSslClientConfiguration {
+    private final Logger log = LoggerFactory.getLogger(MqSslClientConfiguration.class);
     private String host = getStringParam("mq.host");
     private Integer port = getIntParam("mq.port");
     private String channel = getStringParam("mq.channel");
     private String queueManager = getStringParam("mq.queueManager");
     private String login = getStringParam("mq.login");
     private String pass = getStringParam("mq.pass");
-    private String keystore = getStringParam("mq.keystore");
-    private String truststore = getStringParam("mq.truststore");
-    private String chiperSpec = getStringParam("mq.chiperSpec");
     private String appName = getStringParam("mq.appName");
+    private String chiperSpec = getStringParam("mq.chiperSpec");
+    private String keystore = getStringParam("mq.keystore");
+    private String keystorePass = getStringParam("mq.keystorePass");
+    private String truststore = getStringParam("mq.truststore");
+    private String truststorePass = getStringParam("mq.truststorePass");
 
-    // create a ConnectionFactory for ActiveMQ
-    // search the documentation of your JMS broker
     private MQConnectionFactory cf = new MQConnectionFactory();
     private MQConnectionFactory getConnectionFactory() {
         try {
+            if (!chiperSpec.equals("")) {
+                log.info("Connecting with SSL keys. ChiperSpec = {}", chiperSpec);
+                JksHelper.isValid(keystore, keystorePass);
+                JksHelper.isValid(truststore, truststorePass);
+                System.setProperty("com.ibm.cfg.preferTLS", "true");
+                System.setProperty("com.ibm.cfg.useIBMCipherMappings", "false");
+                System.setProperty("java.net.ssl.keyStore", keystore);
+                System.setProperty("java.net.ssl.keyStorePassword", keystorePass);
+                System.setProperty("java.net.ssl.trustStore", truststore);
+                System.setProperty("java.net.ssl.trustStorePassword", truststorePass);
+            }
             cf.setTransportType(WMQConstants.WMQ_CM_CLIENT);
             cf.setHostName(host);
             cf.setPort(port);
@@ -45,7 +62,13 @@ public class MqClientConfiguration {
             // Зачем setShareConvAllowed
             cf.setShareConvAllowed(1);
             cf.setIntProperty("XMSC_WMQ_SHARE_CONV_ALLOWED", 1);
-        } catch (JMSException e) {
+
+            if (!chiperSpec.equals("")){
+                cf.setStringProperty(WMQConstants.WMQ_SSL_CIPHER_SUITE, chiperSpec);
+                cf.setBooleanProperty(WMQConstants.USER_AUTHENTICATION_MQCSP, true);
+            }
+
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
         return cf;

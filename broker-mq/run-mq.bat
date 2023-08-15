@@ -1,1 +1,1 @@
-docker-compose -f mq-container.yml up -d
+docker-compose -f mq-container-ssl.yml up -d
