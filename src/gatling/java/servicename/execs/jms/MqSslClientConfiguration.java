@@ -7,9 +7,6 @@ import helpers.ssl.JksHelper;
 import io.gatling.javaapi.jms.JmsProtocolBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.net.*;
-
 import static io.gatling.javaapi.jms.JmsDsl.jms;
 import static ru.tinkoff.gatling.javaapi.SimulationConfig.getIntParam;
 import static ru.tinkoff.gatling.javaapi.SimulationConfig.getStringParam;
@@ -43,6 +40,17 @@ public class MqSslClientConfiguration {
     private MQConnectionFactory cf = new MQConnectionFactory();
     private MQConnectionFactory getConnectionFactory() {
         try {
+
+            cf.setTransportType(WMQConstants.WMQ_CM_CLIENT);
+            cf.setHostName(host);
+            cf.setPort(port);
+            cf.setChannel(channel);
+            cf.setQueueManager(queueManager);
+            cf.setAppName(appName);
+            // If is true that multiple MQ client connections can use a single TCP/IP network connection
+            cf.setShareConvAllowed(1);
+            cf.setIntProperty("XMSC_WMQ_SHARE_CONV_ALLOWED", 1);
+
             if (!chiperSpec.equals("")) {
                 log.info("Connecting with SSL keys. ChiperSpec = {}", chiperSpec);
                 keystore = ResourceHelper.gatlingResourcePath(keystore);
@@ -55,22 +63,9 @@ public class MqSslClientConfiguration {
                 System.setProperty("javax.net.ssl.keyStorePassword", keystorePass);
                 System.setProperty("javax.net.ssl.trustStore", truststore);
                 System.setProperty("javax.net.ssl.trustStorePassword", truststorePass);
-            }
-            cf.setTransportType(WMQConstants.WMQ_CM_CLIENT);
-            cf.setHostName(host);
-            cf.setPort(port);
-            cf.setChannel(channel);
-            cf.setQueueManager(queueManager);
-            cf.setAppName(appName);
-            // Зачем setShareConvAllowed
-            cf.setShareConvAllowed(1);
-            cf.setIntProperty("XMSC_WMQ_SHARE_CONV_ALLOWED", 1);
-
-            if (!chiperSpec.equals("")){
                 cf.setStringProperty(WMQConstants.WMQ_SSL_CIPHER_SPEC, chiperSpec);
                 cf.setBooleanProperty(WMQConstants.USER_AUTHENTICATION_MQCSP, true);
             }
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -104,7 +99,7 @@ public class MqSslClientConfiguration {
 //                .messageMatcher((io.gatling.javaapi.jms.JmsMessageMatcher) null)
 
                 // In seconds, optional, default to none
-                // Если не выставить таймаут, скорее всего, ваши потоки генератра будут постоянно расти и займут доступную память и соединения на MQ
+                // Если не выставить таймаут, скорее всего, ваши потоки генератора будут постоянно расти и займут всю доступную память и соединения на MQ
                 // А также зависнет тест, возможно навсегда. Потребуется принудительное завершение.
                 .replyTimeout(10);
     }
