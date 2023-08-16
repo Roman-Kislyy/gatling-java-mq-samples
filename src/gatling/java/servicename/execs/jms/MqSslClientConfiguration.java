@@ -2,7 +2,7 @@ package servicename.execs.jms;
 
 import com.ibm.mq.jms.MQConnectionFactory;
 import com.ibm.msg.client.wmq.WMQConstants;
-import helpers.files.ResourceHelper;
+import helpers.ResourceHelper;
 import helpers.ssl.JksHelper;
 import io.gatling.javaapi.jms.JmsProtocolBuilder;
 import org.slf4j.Logger;
