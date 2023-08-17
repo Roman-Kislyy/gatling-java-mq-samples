@@ -1,10 +1,8 @@
 package servicename.simulations;
 
 import io.gatling.javaapi.core.Simulation;
-import servicename.execs.jms.MqClientConfiguration;
-import servicename.execs.jms.MqSslClientConfiguration;
+import servicename.configurations.jms.MqSslClientConfiguration;
 import servicename.scenarios.ClientSearchByPassportScenario;
-
 import static io.gatling.javaapi.core.CoreDsl.*;
 
 /**

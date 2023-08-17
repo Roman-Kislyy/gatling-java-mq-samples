@@ -18,9 +18,8 @@ services:
       MQ_ADMIN_PASSWORD: "changeit"
       MQ_APP_PASSWORD: "changeit"
     volumes:
-      # Может потребоваться chmod 745 ./conf -R
+      # Может на linux потребоваться chmod 745 ./conf -R
       # Иначе не будет работать SSL
       - ./conf/30-gatling-queues.mqsc:/etc/mqm/30-gatling-queues.mqsc
       - ./conf/pki/keys:/etc/mqm/pki/keys
       - ./conf/pki/trust:/etc/mqm/pki/trust
-      # - ./conf/2:/etc/mqm/pki

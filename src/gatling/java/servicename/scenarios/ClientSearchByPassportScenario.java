@@ -36,7 +36,7 @@ public class ClientSearchByPassportScenario {
                         .textMessage(ElFileBody("json/ClientSearch/requests/byPassport.json"))
                         .property("test_header", "test_value")
                         .check(jsonPath("$.passport").exists())
-                );
+                ).exec();
 
 }
 

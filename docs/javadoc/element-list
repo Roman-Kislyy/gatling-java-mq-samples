@@ -1,6 +1,7 @@
 unnamed package
 helpers
 helpers.ssl
-servicename.execs.jms
+servicename.actions
+servicename.configurations.jms
 servicename.scenarios
 servicename.simulations
