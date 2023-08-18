@@ -25,8 +25,7 @@ public class CreateOrder {
      */
     public ChainBuilder buyRedSocks(int count){
         ChainBuilder chain =
-              exec(VarsHelper.randomUUID("orderUuid")) // Генерируем UUID, будем использовать, как #{orderUuid}
-             .exec(VarsHelper.set("count", count))  // Здесь мы создаем переменную #{count} в session, чтобы потом ее использоваться в шаблоне json запроса
+              exec(VarsHelper.set("count", count))  // Здесь мы создаем переменную #{count} в session, чтобы потом ее использоваться в шаблоне json запроса
              .exec(
                     jms("Buy red socks").requestReply()
                     .queue("GATLING.ORDERS.Q1.RQ")

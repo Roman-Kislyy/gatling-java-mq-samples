@@ -34,18 +34,4 @@ public class VarsHelper {
     public static ChainBuilder set(String key, Object value) {
         return VarsHelper.set(key, String.valueOf(value));
     }
-    /**
-     * <p>Сгенерировать UUID и cохранить значение в переменную в session контекст</p>
-     * <p> Далее использовать будем так #{name}
-     * @param name Имя будущей переменной
-     * @return объект с типом ChainBuilder
-     * @author  Roman Kislyy
-     * @since 2023-08-11
-     */
-    public static ChainBuilder randomUUID(String name) {
-        return exec(session -> {
-            Session newSession = session.set(name, UUID.randomUUID().toString());
-            return newSession;
-        });
-    }
 }

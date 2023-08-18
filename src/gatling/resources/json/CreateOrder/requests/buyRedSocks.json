@@ -1,5 +1,5 @@
 {
-  "order_id": "#{orderUuid}",
+  "order_id": "#{randomUuid()}",
   "item_name": "Red Socks",
   "quantity": #{count},
   "color": "Red",
