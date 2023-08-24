@@ -16,7 +16,6 @@ gatling {
 dependencies {
 
     gatling "ru.tinkoff:gatling-picatinny_2.13:0.13.0"
-    gatling "ru.tinkoff:gatling-amqp-plugin_2.13:0.10.3"
     gatling 'com.ibm.mq:com.ibm.mq.allclient:9.2.4.0'
 }
 repositories {
