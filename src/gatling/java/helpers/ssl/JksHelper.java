@@ -3,8 +3,6 @@ package helpers.ssl;
 import helpers.ResourceHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import servicename.configurations.jms.MqSslClientConfiguration;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -22,7 +20,7 @@ import java.security.cert.CertificateException;
  * @since 2023-08-11
  */
 public class JksHelper {
-    private static Logger log = LoggerFactory.getLogger(MqSslClientConfiguration.class);
+    private static Logger log = LoggerFactory.getLogger(JksHelper.class);
     /**
      * <p> Проверяем существует ли указанный файл и корректность указанного пароля
      * @param path Путь в папке gatling/resources или абсолютный путь.

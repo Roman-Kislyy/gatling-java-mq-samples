@@ -16,7 +16,7 @@ public class VarsHelper {
     /**
      * <p>Сохранить значение в переменную #{} в session контекст</p>
      * <p> Далее использовать будем так #{key}
-     * @param key Имя будущей переменной
+     * @param key имя будущей переменной
      * @param value Значение переменной
      * @return объект с типом ChainBuilder
      * @author  Roman Kislyy
