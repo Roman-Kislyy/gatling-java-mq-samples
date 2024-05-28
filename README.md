@@ -22,8 +22,11 @@ Examples of IBM MQ gatling load tests
 # Быстрый старт
 
 ## Можно запустить MQ брокер локально для проверки теста. Вам потребуется Docker Desktop.
+
 `cd ./broker-mq/`
+
 `./run-mq.bat`
+
 `cd ../`
 
 ![](docs/img/MqRun.png)
